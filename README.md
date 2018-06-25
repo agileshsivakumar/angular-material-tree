@@ -12,4 +12,4 @@ Copy paste the `tree` folder and import the `TreeModule` in your code
 
 ## Demo
 
-Link: https://agileshsivakumar.github.io/angular-material-tree/
+Link: https://agileshsivakumar.github.io/angular-material-tree/index.html
