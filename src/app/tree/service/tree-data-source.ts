@@ -10,40 +10,36 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AngularMaterialTreeDatabase } from '../database/angular-material-tree-database';
-import { AngularMaterialTreeModel } from '../model/angular-material-tree-model';
+import { TreeService } from '../service/tree.service';
+import { TreeModel } from '../model/tree.model';
 
 @Injectable()
-export class AngularMaterialTreeService {
-  dataChange: BehaviorSubject<AngularMaterialTreeModel[]> = new BehaviorSubject<
-    AngularMaterialTreeModel[]
-  >([]);
+export class TreeDataSource {
+  dataChange: BehaviorSubject<TreeModel[]> = new BehaviorSubject<TreeModel[]>(
+    []
+  );
 
-  get data(): AngularMaterialTreeModel[] {
+  get data(): TreeModel[] {
     return this.dataChange.value;
   }
-  set data(value: AngularMaterialTreeModel[]) {
+  set data(value: TreeModel[]) {
     this.treeControl.dataNodes = value;
     this.dataChange.next(value);
   }
 
   constructor(
-    private treeControl: FlatTreeControl<AngularMaterialTreeModel>,
-    private database: AngularMaterialTreeDatabase
+    private treeControl: FlatTreeControl<TreeModel>,
+    private database: TreeService
   ) {}
 
-  connect(
-    collectionViewer: CollectionViewer
-  ): Observable<AngularMaterialTreeModel[]> {
+  connect(collectionViewer: CollectionViewer): Observable<TreeModel[]> {
     if (this.treeControl.expansionModel.onChange) {
       this.treeControl.expansionModel.onChange.subscribe(change => {
         if (
-          (change as SelectionChange<AngularMaterialTreeModel>).added ||
-          (change as SelectionChange<AngularMaterialTreeModel>).removed
+          (change as SelectionChange<TreeModel>).added ||
+          (change as SelectionChange<TreeModel>).removed
         ) {
-          this.handleTreeControl(change as SelectionChange<
-            AngularMaterialTreeModel
-          >);
+          this.handleTreeControl(change as SelectionChange<TreeModel>);
         }
       });
     }
@@ -53,7 +49,7 @@ export class AngularMaterialTreeService {
   }
 
   /** Handle expand/collapse behaviors */
-  handleTreeControl(change: SelectionChange<AngularMaterialTreeModel>) {
+  handleTreeControl(change: SelectionChange<TreeModel>) {
     if (change.added) {
       change.added.forEach(node => this.toggleNode(node, true));
     }
@@ -65,7 +61,7 @@ export class AngularMaterialTreeService {
   /**
    * Toggle the node, remove from display list
    */
-  toggleNode(node: AngularMaterialTreeModel, expand: boolean) {
+  toggleNode(node: TreeModel, expand: boolean) {
     const children = this.database.getChildren(node.item);
     const index = this.data.indexOf(node);
     if (!children || index < 0) {
@@ -77,7 +73,7 @@ export class AngularMaterialTreeService {
       if (expand) {
         const nodes = children.map(
           name =>
-            new AngularMaterialTreeModel(
+            new TreeModel(
               name,
               node.level + 1,
               this.database.isExpandable(name)

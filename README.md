@@ -1,6 +1,7 @@
 # AngularMaterialTree
 
-Sample project to use angular material tree component `v-6.3.0`
+Sample project to use angular cdk tree component `v-6.3.1`
+`The stock version of tree, no angular material styling`
 
 ## Run the project
 

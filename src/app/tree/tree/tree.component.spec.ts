@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AngularMaterialTreeComponent } from './angular-material-tree.component';
+import { TreeComponent } from './tree.component';
 
 describe('AngularMaterialTreeComponent', () => {
-  let component: AngularMaterialTreeComponent;
-  let fixture: ComponentFixture<AngularMaterialTreeComponent>;
+  let component: TreeComponent;
+  let fixture: ComponentFixture<TreeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AngularMaterialTreeComponent]
+      declarations: [TreeComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AngularMaterialTreeComponent);
+    fixture = TestBed.createComponent(TreeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

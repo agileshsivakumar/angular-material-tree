@@ -1,0 +1,16 @@
+<cdk-tree [dataSource]="treeDataSource" [treeControl]="treeControl">
+  <cdk-tree-node *cdkTreeNodeDef="let node" cdkTreeNodePadding>
+    {{node.item}}
+    <br>
+    <br>
+  </cdk-tree-node>
+  <cdk-tree-node *cdkTreeNodeDef="let node; when: hasChild" cdkTreeNodePadding cdkTreeNodeToggleRecursive>
+    <button class="tree-node-button">
+      {{treeControl.isExpanded(node) ? 'v' : '>'}}
+    </button>
+    {{node.item}}
+    <div *ngIf="node.isLoading" class="example-tree-progress-bar">Loading...</div>
+    <br>
+    <br>
+  </cdk-tree-node>
+</cdk-tree>

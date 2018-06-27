@@ -1,22 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  MatButtonModule,
-  MatIconModule,
-  MatProgressBarModule,
-  MatTreeModule
-} from '@angular/material';
-import { AngularMaterialTreeComponent } from './angular-material-tree/angular-material-tree.component';
+import { CdkTreeModule } from '@angular/cdk/tree';
+import { TreeComponent } from './tree/tree.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatTreeModule,
-    MatIconModule,
-    MatProgressBarModule,
-    MatButtonModule
-  ],
-  declarations: [AngularMaterialTreeComponent],
-  exports: [AngularMaterialTreeComponent]
+  imports: [CommonModule, CdkTreeModule],
+  declarations: [TreeComponent],
+  exports: [TreeComponent]
 })
 export class TreeModule {}
