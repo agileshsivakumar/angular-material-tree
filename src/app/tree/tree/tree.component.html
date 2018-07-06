@@ -5,7 +5,7 @@
     <br>
   </cdk-tree-node>
   <cdk-tree-node *cdkTreeNodeDef="let node; when: hasChild" cdkTreeNodePadding cdkTreeNodeToggleRecursive>
-    <button class="tree-node-button">
+    <button class="tree-node-button" cdkTreeNodeToggle>
       {{treeControl.isExpanded(node) ? 'v' : '>'}}
     </button>
     {{node.item}}
