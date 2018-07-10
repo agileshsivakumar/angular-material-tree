@@ -15,9 +15,7 @@ import { TreeModel } from '../model/tree.model';
 
 @Injectable()
 export class TreeDataSource {
-  dataChange: BehaviorSubject<TreeModel[]> = new BehaviorSubject<TreeModel[]>(
-    []
-  );
+  dataChange = new BehaviorSubject<TreeModel[]>([]);
 
   get data(): TreeModel[] {
     return this.dataChange.value;
@@ -27,25 +25,18 @@ export class TreeDataSource {
     this.dataChange.next(value);
   }
 
-  constructor(
-    private treeControl: FlatTreeControl<TreeModel>,
-    private database: TreeService
-  ) {}
+  constructor(private treeControl: FlatTreeControl<TreeModel>, private database: TreeService) {}
 
   connect(collectionViewer: CollectionViewer): Observable<TreeModel[]> {
     if (this.treeControl.expansionModel.onChange) {
       this.treeControl.expansionModel.onChange.subscribe(change => {
-        if (
-          (change as SelectionChange<TreeModel>).added ||
-          (change as SelectionChange<TreeModel>).removed
-        ) {
+        if ((change as SelectionChange<TreeModel>).added || (change as SelectionChange<TreeModel>).removed) {
           this.handleTreeControl(change as SelectionChange<TreeModel>);
         }
       });
     }
-    return merge(collectionViewer.viewChange, this.dataChange).pipe(
-      map(() => this.data)
-    );
+
+    return merge(collectionViewer.viewChange, this.dataChange).pipe(map(() => this.data));
   }
 
   /** Handle expand/collapse behaviors */
@@ -54,7 +45,10 @@ export class TreeDataSource {
       change.added.forEach(node => this.toggleNode(node, true));
     }
     if (change.removed) {
-      change.removed.reverse().forEach(node => this.toggleNode(node, false));
+      change.removed
+        .slice()
+        .reverse()
+        .forEach(node => this.toggleNode(node, false));
     }
   }
 
@@ -68,20 +62,17 @@ export class TreeDataSource {
       // If no children, or cannot find the node, no op
       return;
     }
+
     node.isLoading = true;
+
     setTimeout(() => {
       if (expand) {
-        const nodes = children.map(
-          name =>
-            new TreeModel(
-              name,
-              node.level + 1,
-              this.database.isExpandable(name)
-            )
-        );
+        const nodes = children.map(name => new TreeModel(name, node.level + 1, this.database.isExpandable(name)));
         this.data.splice(index + 1, 0, ...nodes);
       } else {
-        this.data.splice(index + 1, children.length);
+        let count = 0;
+        for (let i = index + 1; i < this.data.length && this.data[i].level > node.level; i++, count++) {}
+        this.data.splice(index + 1, count);
       }
 
       // notify the change

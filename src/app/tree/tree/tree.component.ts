@@ -23,15 +23,9 @@ export class TreeComponent {
     this.treeDataSource.data = treeService.initialData();
   }
 
-  getLevel = (node: TreeModel) => {
-    return node.level;
-  }
+  getLevel = (node: TreeModel) => node.level;
 
-  isExpandable = (node: TreeModel) => {
-    return node.isExpandable;
-  }
+  isExpandable = (node: TreeModel) => node.isExpandable;
 
-  hasChild = (_: number, _nodeData: TreeModel) => {
-    return _nodeData.isExpandable;
-  }
+  hasChild = (_: number, _nodeData: TreeModel) => _nodeData.isExpandable;
 }

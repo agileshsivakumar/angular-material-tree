@@ -5,33 +5,18 @@ import { TreeModel } from '../model/tree.model';
  * the descendants data from the database.
  */
 export class TreeService {
-  treeMapping = {
-    RootLevel1: ['Root1Child1', 'Root1Child2'],
-    RootLevel2: ['Root2Child1', 'Root2Child2']
-  };
-
-  dataMap = new Map([
-    ['RootLevel1', ['Apple', 'Orange', 'Banana']],
-    ['RootLevel2', ['Tomato', 'Potato', 'Onion']],
+  dataMap = new Map<string, string[]>([
+    ['Fruits', ['Apple', 'Orange', 'Banana']],
+    ['Vegetables', ['Tomato', 'Potato', 'Onion']],
     ['Apple', ['Fuji', 'Macintosh']],
     ['Onion', ['Yellow', 'White', 'Purple']]
   ]);
 
-  rootLevelNodes = ['Fruits', 'Vegetables'];
+  rootLevelNodes: string[] = ['Fruits', 'Vegetables'];
 
   /** Initial data from database */
   initialData(): TreeModel[] {
-    const rootLevelNodes = [];
-    for (const key in this.treeMapping) {
-      if (this.treeMapping.hasOwnProperty(key)) {
-        rootLevelNodes.push(key);
-      }
-    }
-
-    const rootLevelNodesMap = rootLevelNodes.map(
-      name => new TreeModel(name, 0, true)
-    );
-    return rootLevelNodesMap;
+    return this.rootLevelNodes.map(name => new TreeModel(name, 0, true));
   }
 
   getChildren(node: string): string[] | undefined {

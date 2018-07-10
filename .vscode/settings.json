@@ -30,5 +30,6 @@
   "window.zoomLevel": 0,
   "zenMode.centerLayout": false,
   "tslint.autoFixOnSave": true,
-  "prettier.singleQuote": true
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 140
 }
